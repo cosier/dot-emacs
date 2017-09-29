@@ -14,7 +14,8 @@
 
 (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
 (defconst *is-a-mac* (eq system-type 'darwin))
-
+(defconst *keys-file* (expand-file-name "keys.el" user-emacs-directory))
+(defconst *config-file* (expand-file-name "config.el" user-emacs-directory))
 
 ;;----------------------------------------------------------------------------
 ;; Adjust garbage collection thresholds during startup, and thereafter
@@ -81,6 +82,8 @@
 (require 'init-github)
 
 (require 'init-projectile)
+(require 'init-helm)
+(require 'init-evil)
 
 (require 'init-compile)
 ;;(require 'init-crontab)
@@ -132,7 +135,7 @@
 (require-package 'htmlize)
 (require-package 'dsvn)
 (when *is-a-mac*
-    (require-package 'osx-location))
+  (require-package 'osx-location))
 (maybe-require-package 'regex-tool)
 
 
@@ -145,10 +148,14 @@
 
 
 ;;----------------------------------------------------------------------------
-;; Variables configured via the interactive 'customize' interface
+;; Variables and customisation
 ;;----------------------------------------------------------------------------
 (when (file-exists-p custom-file)
-    (load custom-file))
+  (load custom-file))
+
+(load *config-file*)
+(when (file-exists-p *keys-file*)
+  (load *keys-file*))
 
 
 (provide 'init)
